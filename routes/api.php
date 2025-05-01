@@ -1,10 +1,19 @@
 <?php
 
+use App\Http\Controllers\Api\JWTAuthController;
+use App\Http\Middleware\JwtMiddleware;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/user', function () {
-    $data = [ 'id' => 1, 'nome' => 'Henrique'];
-    return response()->json($data, 401);
+Route::group(['prefix' => 'auth'], function(){
+    Route::controller(JWTAuthController::class)->group( function() {
+        
+        Route::post('register', 'register');
+        Route::post('login', 'login');
+
+        Route::middleware([JwtMiddleware::class])->group( function (){
+            Route::get('user-profile', 'getUser');
+            Route::get('logout', 'logout');
+        });
+        
+    });
 });
-
-
