@@ -3,7 +3,11 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use App\Enums\Auth\UserRole;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
@@ -22,6 +26,7 @@ class User extends Authenticatable implements JWTSubject
         'name',
         'email',
         'password',
+        'role',
     ];
 
     /**
@@ -33,6 +38,18 @@ class User extends Authenticatable implements JWTSubject
         'password',
         'remember_token',
     ];
+
+    public function admin(): HasMany {
+        return $this->hasMany(Admin::class);
+    }
+
+    public function client(): HasMany {
+        return $this->hasMany(Client::class);
+    }
+
+    public function provider(): HasMany {
+        return $this->hasMany(Provider::class);
+    }
 
     public function getJWTIdentifier()
     {
@@ -55,8 +72,10 @@ class User extends Authenticatable implements JWTSubject
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'role' => UserRole::class,
         ];
     }
+
 
 
 }

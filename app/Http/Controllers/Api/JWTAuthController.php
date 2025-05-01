@@ -20,12 +20,13 @@ class JWTAuthController extends Controller
         $user = User::create([
             'name' => $request->input("name"),
             'email' => $request->input("email"),
-            'password' => Hash::make($request->input("password"))
+            'password' => Hash::make($request->input("password")),
+            'role' => $request->input('role')
         ]);
 
         // tratamento de erros
-        $token = JWTAuth::fromUser($user);
-
+        $token = JWTAuth::claims(['role' => $user->role])->fromUser($user);
+        
         return response()->json(compact('user','token'), 200);
 
     }
@@ -43,9 +44,11 @@ class JWTAuthController extends Controller
             // retorna usuário (user) autenticado
             $user = auth('')->user();
 
-            //   $token = JWTAuth::claims(['role' => $user->role])->fromUser($user);    
             // tratamento de erros
-            $token = JWTAuth::fromUser($user);
+            $token = JWTAuth::claims(['role' => $user->role])->fromUser($user);    
+            
+            // tratamento de erros
+            //$token = JWTAuth::fromUser($user);
   
             return response()->json(compact('token'), 200);
 

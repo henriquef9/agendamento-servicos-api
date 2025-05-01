@@ -2,9 +2,11 @@
 
 namespace App\Http\Requests\Auth;
 
+use App\Enums\Auth\UserRole;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
-use Illuminate\Contracts\Validation\Validator; 
+use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Validation\Rules\Enum;
 
 class RegisterRequest extends FormRequest
 {
@@ -27,6 +29,7 @@ class RegisterRequest extends FormRequest
             'name' => 'required|string|max:250',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|string|min:6', 
+            'role' => ['required', new Enum(UserRole::class)],
        ];
     }
 
