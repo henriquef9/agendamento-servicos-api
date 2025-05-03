@@ -2,6 +2,7 @@
 
 namespace App\Repositories\Eloquent;
 
+use App\Dtos\User\CreateUserDTO;
 use App\Models\User;
 use App\Repositories\Interfaces\UserRepositoryInterface;
 use Illuminate\Contracts\Pagination\Paginator;
@@ -44,9 +45,9 @@ class UserRepository implements UserRepositoryInterface {
 
     }
 
-    public function create(array $data): User {
+    public function create(CreateUserDTO $data): User {
 
-        $user = User::create($data);
+        $user = User::create((array) $data);
 
         return $user;
 

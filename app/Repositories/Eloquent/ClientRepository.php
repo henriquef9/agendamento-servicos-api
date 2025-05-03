@@ -2,6 +2,7 @@
 
 namespace App\Repositories\Eloquent;
 
+use App\Dtos\Client\CreateClientDTO;
 use App\Models\Client;
 use App\Repositories\Interfaces\ClientRepositoryInterface;
 use Illuminate\Contracts\Pagination\Paginator;
@@ -33,8 +34,8 @@ class ClientRepository implements ClientRepositoryInterface {
         return $query->paginate($size, ['*'], 'page', $page);
     }
 
-    public function create(array $data): Client {
-        return Client::create($data);
+    public function create(CreateClientDTO $data): Client {
+        return Client::create((array) $data);
     }
 
     public function update(int $id, array $data): bool {
