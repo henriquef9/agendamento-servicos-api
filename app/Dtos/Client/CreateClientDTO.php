@@ -11,7 +11,6 @@ class CreateClientDTO {
         public ?string $user_id,
         public ?string $cpf,
         public ?string $cnpj,
-        public ?string $profile_picture,
         public string $phone_number_1,
         public ?string $phone_number_2,
         public string $cep,
@@ -25,13 +24,12 @@ class CreateClientDTO {
         
     }
 
-    public static function makefromRequest(StoreClientRequest $request, ?string $id, ?string $pathProfilePicture){
+    public static function makefromRequest(StoreClientRequest $request, ?string $id){
 
         return new self(
             $id,
             $request->input('cpf'),
             $request->input('cnpj'),
-            $pathProfilePicture,
             $request->input('phone_number_1'),
             $request->input('phone_number_2'),
             $request->input('cep'),

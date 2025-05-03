@@ -23,6 +23,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin'], function() {
 
     Route::controller(AdminController::class)->group(function() {
         Route::post('', 'store')->name('create');
+        Route::post('upload-profile-picture', 'uploadProfilePicture')->name('uploadProfile');
     });
 
 });
@@ -31,6 +32,7 @@ Route::group(['prefix' => 'client', 'as' => 'client'], function() {
 
     Route::controller(ClientController::class)->group(function() {
         Route::post('', 'store')->name('create');
+        Route::post('upload-profile-picture/{id}', 'uploadProfilePicture')->name('uploadProfile');
     });
 
 });
