@@ -34,18 +34,17 @@ class ClientController extends Controller
         $clientDTO = CreateClientDTO::makefromRequest($request, $user->id);
         $client = $this->clientService->register($clientDTO);
         
-        return response()->json(['status' => 'success', 'message' => 'Conta criada com sucesso!', 'clientDTO' => $clientDTO, 'userDTO' => $userDTO, 'data' => $client] , 201);
+        return response()->json(['status' => 'success', 'message' => 'Conta criada com sucesso!', 'data' => $client] , 201);
       
     }
 
-    public function uploadProfilePicture(ImagemRequest $request, string $id){
+    public function uploadProfilePicture(ImagemRequest $request){
 
-        // buscar cliente
-        // verificar se existe cliente
-
+        $user = auth('')->user();
+    
         $file = $request->file('file');
 
-        $path = $this->imagemUploadService->upload($file, '/profile-picture/client/');
+        $path = $this->imagemUploadService->upload($file, '/profile-picture/client');
 
         if(!$path){
             return response()->json(['status' => 'error', 'message' => 'Error durante upload de imagem de perfil.'], 500);
@@ -53,7 +52,9 @@ class ClientController extends Controller
 
         $url = $this->imagemUploadService->getUrl($path);
 
-        // atualizar client
+        $client = $this->clientService->getByUserId($user->id);
+
+        $this->clientService->uploadProfilePicture($client->id, $path);  
 
         return response()->json(['status' => 'success', 'message' => 'Upload de imagem de perfil realizado com sucesso.', 'url' => $url], 201);
 

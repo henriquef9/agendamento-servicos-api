@@ -3,6 +3,7 @@
 namespace App\Repositories\Eloquent;
 
 use App\Dtos\User\CreateUserDTO;
+use App\Dtos\User\UpdateUserDTO;
 use App\Models\User;
 use App\Repositories\Interfaces\UserRepositoryInterface;
 use Illuminate\Contracts\Pagination\Paginator;
@@ -53,14 +54,10 @@ class UserRepository implements UserRepositoryInterface {
 
     }
 
-    public function update(int $id, array $data): bool {
-        $user = User::find($id);
+    public function update(UpdateUserDTO $data): bool {
         
-        if ($user) {
-            return $user->update($data);
-        }
-        
-        return false;
+        return User::update((array) $data);      
+          
     }
 
     public function delete(int $id): bool {

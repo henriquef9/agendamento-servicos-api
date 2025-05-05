@@ -19,14 +19,14 @@ class RoleMiddleware
     {
         try{
             if(!$user = JWTAuth::parseToken()->authenticate()){
-                return response()->json(['success'=> false, 'message' => 'Usuário não encontrado.'], 404);
+                return response()->json(['status'=> 'error', 'message' => 'Usuário não encontrado.'], 404);
             }
         } catch (JWTException $e){
-            return response()->json(['success'=> false, 'message' => 'Token Inválido.'], 404);
+            return response()->json(['status'=> 'error', 'message' => 'Token Inválido.'], 404);
         }
     
         if(!in_array($user->role, $roles)){
-            return response()->json(['success' => false, 'message' => 'Acesso não autorizado.', 403]);
+            return response()->json(['status' => 'error', 'message' => 'Acesso não autorizado.', 403]);
         }
         
         return $next($request);

@@ -19,11 +19,15 @@ Route::group(['prefix' => 'auth', 'as' => 'auth'], function(){
     });
 });
 
+
 Route::group(['prefix' => 'admin', 'as' => 'admin'], function() {
 
     Route::controller(AdminController::class)->group(function() {
         Route::post('', 'store')->name('create');
-        Route::post('upload-profile-picture', 'uploadProfilePicture')->name('uploadProfile');
+
+        Route::middleware([JwtMiddleware::class])->group(function () {
+            Route::post('upload-profile-picture', 'uploadProfilePicture')->name('uploadProfile');
+        });
     });
 
 });
@@ -32,7 +36,10 @@ Route::group(['prefix' => 'client', 'as' => 'client'], function() {
 
     Route::controller(ClientController::class)->group(function() {
         Route::post('', 'store')->name('create');
-        Route::post('upload-profile-picture/{id}', 'uploadProfilePicture')->name('uploadProfile');
+
+        Route::middleware([JwtMiddleware::class])->group(function () {
+            Route::post('upload-profile-picture', 'uploadProfilePicture')->name('uploadProfile');
+        });
     });
 
 });
@@ -41,6 +48,10 @@ Route::group(['prefix' => 'provider', 'as' => 'provider'], function() {
 
     Route::controller(ProviderController::class)->group(function() {
         Route::post('', 'store')->name('create');
+        
+        Route::middleware([JwtMiddleware::class])->group(function () {
+            Route::post('upload-logo', 'uploadLogo')->name('uploadProfile');
+        });
     });
 
 });

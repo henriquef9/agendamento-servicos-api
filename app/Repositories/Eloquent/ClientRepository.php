@@ -3,6 +3,7 @@
 namespace App\Repositories\Eloquent;
 
 use App\Dtos\Client\CreateClientDTO;
+use App\Dtos\Client\UpdateClientDTO;
 use App\Models\Client;
 use App\Repositories\Interfaces\ClientRepositoryInterface;
 use Illuminate\Contracts\Pagination\Paginator;
@@ -38,14 +39,16 @@ class ClientRepository implements ClientRepositoryInterface {
         return Client::create((array) $data);
     }
 
-    public function update(int $id, array $data): bool {
-        $Client = Client::find($id);
+    public function update(UpdateClientDTO $data): bool {
 
-        if($Client) {
-            Client::update($data);
+        $client = Client::find($data->id);
+
+        if (!$client) {
+            return false;
         }
+    
+        return $client->update((array) $data);
 
-        return false;
     }
 
     public function delete(int $id): bool {
@@ -57,4 +60,20 @@ class ClientRepository implements ClientRepositoryInterface {
         
         return false;
     }
+
+    public function updateProfilePicture(string $id, string $path): bool {
+
+        $client = Client::find($id);
+
+        if (!$client) {
+            return false;
+        }
+    
+        return $client->update([
+            'profile_picture' => $path,
+        ]);
+
+    }
+
+
 }

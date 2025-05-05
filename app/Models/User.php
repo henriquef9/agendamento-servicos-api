@@ -6,7 +6,6 @@ namespace App\Models;
 
 use App\Enums\Auth\UserRole;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -39,16 +38,16 @@ class User extends Authenticatable implements JWTSubject
         'remember_token',
     ];
 
-    public function admin(): HasMany {
-        return $this->hasMany(Admin::class);
+    public function admin(): HasOne {
+        return $this->hasOne(Admin::class);
     }
 
-    public function client(): HasMany {
-        return $this->hasMany(Client::class);
+    public function client(): HasOne {
+        return $this->hasOne(Client::class);
     }
 
-    public function provider(): HasMany {
-        return $this->hasMany(Provider::class);
+    public function provider(): HasOne {
+        return $this->hasOne(Provider::class);
     }
 
     public function getJWTIdentifier()

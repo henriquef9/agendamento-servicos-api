@@ -3,6 +3,7 @@
 namespace App\Repositories\Interfaces;
 
 use App\Dtos\User\CreateUserDTO;
+use App\Dtos\User\UpdateUserDTO;
 use App\Models\User;
 use Illuminate\Contracts\Pagination\Paginator;
 
@@ -18,7 +19,7 @@ interface UserRepositoryInterface {
 
     public function create(CreateUserDTO $data): User;
 
-    public function update(int $id, array $data): bool;
+    public function update(UpdateUserDTO $data): bool;
 
     public function delete(int $id): bool;
     

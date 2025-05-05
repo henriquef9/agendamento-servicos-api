@@ -2,14 +2,16 @@
 
 namespace App\Dtos\Client;
 
-use App\Http\Requests\Client\StoreClientRequest;
+use App\Http\Requests\Client\UpdateClientRequest;
 
-class CreateClientDTO {
+class UpdateClientDTO {
 
     public function __construct(
-        public ?string $user_id,
+        public string $id,
+        public string $user_id,
         public ?string $cpf,
         public ?string $cnpj,
+        public ?string $profile_picture,
         public string $phone_number_1,
         public ?string $phone_number_2,
         public string $cep,
@@ -23,12 +25,14 @@ class CreateClientDTO {
         
     }
 
-    public static function makefromRequest(StoreClientRequest $request, ?string $id){
+    public static function makefromRequest(UpdateClientRequest $request, string $id, ?string $userId, ?string $pathProfilePicturee){
 
         return new self(
             $id,
+            $userId,
             $request->input('cpf'),
             $request->input('cnpj'),
+            $pathProfilePicturee,
             $request->input('phone_number_1'),
             $request->input('phone_number_2'),
             $request->input('cep'),
