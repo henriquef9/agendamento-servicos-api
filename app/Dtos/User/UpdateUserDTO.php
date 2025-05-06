@@ -3,7 +3,7 @@
 namespace App\Dtos\User;
 
 use App\Enums\Auth\UserRole;
-use App\Http\Requests\User\StoreUserRequest;
+use App\Http\Requests\User\UpdateUserRequest;
 
 class UpdateUserDTO {
 
@@ -18,16 +18,21 @@ class UpdateUserDTO {
         
     }
 
-    public static function makefromRequest(StoreUserRequest $request, string $id, ?UserRole $role){
+    public static function makefromRequest(UpdateUserRequest $request, ?UserRole $role){
 
         return new self(
-            $id,
+            $request->input('user_id'),
             $request->input('name'),
             $request->input('email'),
             $request->input('password'),
             $role
         );
 
+    }
+
+    public function toArray(): array
+    {
+        return array_filter(get_object_vars($this)); // remove nulls
     }
 
 }   

@@ -6,6 +6,7 @@ use App\Dtos\Client\CreateClientDTO;
 use App\Dtos\Client\UpdateClientDTO;
 use App\Models\Client;
 use App\Repositories\Interfaces\ClientRepositoryInterface;
+use Illuminate\Contracts\Pagination\Paginator;
 
 class ClientService {
 
@@ -28,6 +29,14 @@ class ClientService {
         return $this->clientRepository->findByUserId($id);
 
     }
+
+    public function getAll(int $page = 1, int $size = 10, array $filters = []): Paginator {
+
+
+        return $this->clientRepository->getAll($page, $size, $filters);
+
+    }
+
 
     public function register(CreateClientDTO $clientDTO): Client {
 

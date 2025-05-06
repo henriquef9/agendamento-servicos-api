@@ -56,8 +56,13 @@ class UserRepository implements UserRepositoryInterface {
 
     public function update(UpdateUserDTO $data): bool {
         
-        return User::update((array) $data);      
-          
+        $user = User::find($data->id);
+
+        if (!$user) {
+            return false;
+        }
+    
+        return $user->update((array) $data);          
     }
 
     public function delete(int $id): bool {

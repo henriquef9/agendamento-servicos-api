@@ -27,9 +27,15 @@ class ClientRepository implements ClientRepositoryInterface {
         $query = Client::query();
 
         foreach ($filters as $key => $value) {
-            $query->when($value, function ($q) use ($key, $value){
-                $q->where($key, 'like', '%'.$value.'%');
-            });
+            if (in_array($key, ['name', 'email'])) {
+                $query->whereHas('user', function ($q) use ($key, $value) {
+                    $q->where($key, 'like', "%{$value}%");
+                });
+            } else {
+                $query->when($value, function ($q) use ($key, $value) {
+                    $q->where($key, 'like', "%{$value}%");
+                });
+            }
         }
 
         return $query->paginate($size, ['*'], 'page', $page);
@@ -47,7 +53,7 @@ class ClientRepository implements ClientRepositoryInterface {
             return false;
         }
     
-        return $client->update((array) $data);
+        return $client->update($data->toArray());
 
     }
 

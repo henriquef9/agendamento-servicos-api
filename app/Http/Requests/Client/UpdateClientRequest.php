@@ -2,11 +2,12 @@
 
 namespace App\Http\Requests\Client;
 
+use App\Http\Requests\User\UpdateUserRequest;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class UpdateClientRequest extends FormRequest
+class UpdateClientRequest extends UpdateUserRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,15 +24,11 @@ class UpdateClientRequest extends FormRequest
      */
     public function rules(): array
     {
-        $clientId = $this->route('client'); 
+        $clientId = $this->input('id'); 
 
-        dd($clientId);
-
-        return [
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email,' . $clientId,
-            'password' => 'nullable|string|min:6',
-
+        return array_merge(Parent::rules(), [
+            'id' => 'required|string|exists:clients,id',
+            'user_id' => 'required|string|exists:clients,user_id',
             'cpf' => 'required_without:cnpj|string|size:11|unique:clients,cpf,' . $clientId,
             'cnpj' => 'required_without:cpf|string|size:14|unique:clients,cnpj,' . $clientId,
             'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
@@ -43,12 +40,12 @@ class UpdateClientRequest extends FormRequest
             'street' => 'required|string|max:255',
             'district' => 'required|string|max:255',
             'complement' => 'nullable|string|max:255',
-        ];
+        ]);
     }
 
     public function messages(): array
     {
-        return [
+        return array_merge(parent::messages(), [
             'name.required' => 'Nome é obrigatório.',
             'name.max' => 'O nome não pode exceder 250 caracteres.',
             'email.required' => 'E-mail é obrigatório.',
@@ -56,7 +53,7 @@ class UpdateClientRequest extends FormRequest
             'email.email' => 'O e-mail fornecido é inválido.',
             'password.required' => "Senha é obrigatório.",
             'password.min' => "A senha deve ter no mínimo 6 caracteres."
-        ];        
+        ]);        
     }
 
     public function failedValidation(Validator $validator) { 

@@ -24,9 +24,9 @@ class StoreClientRequest extends StoreUserRequest
     public function rules(): array
     {
         return array_merge(Parent::rules(), [
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|string|min:6',
+            // 'name' => 'required|string|max:255',
+            // 'email' => 'required|email|unique:users,email',
+            // 'password' => 'required|string|min:6',
 
             'cpf' => 'required_without:cnpj|string|size:11|unique:clients,cpf',
             'cnpj' => 'required_without:cpf|string|size:14|unique:clients,cnpj',

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Enums\Auth\UserRole;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RegisterRequest;
@@ -64,6 +65,16 @@ class JWTAuthController extends Controller
             if(!$user = JWTAuth::parseToken()->authenticate()){
                 return response()->json(['success'=> false, 'message' => 'Usuário não encontrado.'], 404);
             }
+
+            if ($user->role === UserRole::ADMIN) {
+                $user->load('admin');
+            } elseif ($user->role === UserRole::CLIENT) {
+                $user->load('client');
+            } elseif ($user->role === UserRole::PROVIDER) {
+                $user->load('provider');
+            }
+            
+
         } catch (JWTException $e){
             return response()->json(['success'=> false, 'message' => 'Token Inválido.'], 404);
         }

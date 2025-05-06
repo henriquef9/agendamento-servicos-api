@@ -30,4 +30,17 @@ class ImagemUploadService {
 
     }
 
+    public function delete(string $path): bool {
+
+        return $this->imagemUploadRepository->delete($path);
+
+    }
+
+    public function exists(string $path): bool {
+
+        return $this->imagemUploadRepository->exists($path);
+
+    }
+    
+
 }

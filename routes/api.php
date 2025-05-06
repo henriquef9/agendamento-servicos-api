@@ -38,7 +38,13 @@ Route::group(['prefix' => 'client', 'as' => 'client'], function() {
         Route::post('', 'store')->name('create');
 
         Route::middleware([JwtMiddleware::class])->group(function () {
+            Route::get('', 'getAll')->name('clientById');
+            Route::get('/{id}', 'getById')->name('clientById');
+            Route::get('/User/{id}', 'getByUserId')->name('clientByUserId');
+
             Route::post('upload-profile-picture', 'uploadProfilePicture')->name('uploadProfile');
+            Route::put('', 'update')->name('update');
+            Route::delete('/{id}', 'delete')->name('delete');
         });
     });
 
